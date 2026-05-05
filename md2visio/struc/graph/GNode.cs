@@ -78,12 +78,12 @@ namespace md2visio.struc.graph
                 GrowthDirection grow = node.Container.GrowthDirect;
                 if (grow.H == 0)
                 {
-                    pos.X = (float)x; // 水平居中对齐
+                    pos.X = (float)x; // horizontal center alignment
                     pos.Y = (float)(y + grow.V * reverse * (h / 2 + sh / 2 + SPACE));
                 }
                 else if (grow.V == 0)
                 {
-                    pos.Y = (float)y; // 垂直居中对齐
+                    pos.Y = (float)y; // vertical center alignment
                     if (grow.H > 0) pos.X = (float)(x + grow.H * reverse * (w / 2 + sw / 2 + SPACE));
                 }
             }

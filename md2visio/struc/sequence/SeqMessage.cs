@@ -13,13 +13,13 @@ namespace md2visio.struc.sequence
         public Shape? MessageShape { get; set; }
         public double LabelHeight { get; set; }
 
-        // 判断是否为自调用
+        // Determine whether this is a self-call
         public bool IsSelfCall => From == To;
 
-        // 判断是否为虚线
+        // Check whether this is a dashed line
         public bool IsDashed => ArrowType.StartsWith("--");
 
-        // 判断是否为同步消息(带>>)
+        // Check whether this is a synchronous message (with >>)
         public bool IsSynchronous => ArrowType.EndsWith(">>");
 
         public SeqMessage()

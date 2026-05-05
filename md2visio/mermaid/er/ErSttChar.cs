@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 namespace md2visio.mermaid.er
 {
     /// <summary>
-    /// ER图字符状态类
-    /// 核心状态分发器，根据当前字符决定下一个状态
+    /// ER diagram character state class
+    /// Core state dispatcher; decides next state based on the current character
     /// </summary>
     internal class ErSttChar : SynState
     {
-        // 关系符号的起始字符模式
+        // Starting character pattern for relationship symbols
         static readonly Regex regRelationStart = new(
             @"^(\|\||[|o}\|])",
             RegexOptions.Compiled);
@@ -19,10 +19,10 @@ namespace md2visio.mermaid.er
             string? next = Ctx.Peek();
             if (next == null) return EndOfFile;
 
-            // 注释处理
+            // Comment handling
             if (next == "%") return Forward<SttPercent>();
 
-            // 行结束
+            // End of line
             if (next == "\n")
             {
                 if (Buffer.Length > 0)
@@ -33,15 +33,15 @@ namespace md2visio.mermaid.er
                 return Forward<SttFinishFlag>();
             }
 
-            // Mermaid 代码块结束
+            // Mermaid code block end
             if (next == "`") return Forward<SttMermaidClose>();
 
-            // 空白字符 - 可能是单词结束
+            // Whitespace — possible end of word
             if (next == " " || next == "\t")
             {
                 if (Buffer.Length > 0)
                 {
-                    // 检查是否是关键字
+                    // Check whether this is a keyword
                     if (ErSttKeyword.IsKeyword(Buffer))
                     {
                         return Forward<ErSttKeyword>();
@@ -52,7 +52,7 @@ namespace md2visio.mermaid.er
                 return Take().Forward<ErSttChar>();
             }
 
-            // 实体属性块开始
+            // Entity attribute block start
             if (next == "{")
             {
                 if (Buffer.Length > 0)
@@ -63,7 +63,7 @@ namespace md2visio.mermaid.er
                 return Forward<ErSttEntityBody>();
             }
 
-            // 关系标签
+            // Relationship label
             if (next == ":")
             {
                 if (Buffer.Length > 0)
@@ -74,7 +74,7 @@ namespace md2visio.mermaid.er
                 return Forward<ErSttLabel>();
             }
 
-            // 检查是否是关系符号开始
+            // Check whether this is the start of a relationship symbol
             if (IsRelationStart())
             {
                 if (Buffer.Length > 0)
@@ -85,22 +85,22 @@ namespace md2visio.mermaid.er
                 return Forward<ErSttRelation>();
             }
 
-            // 普通字符 - 累积到 Buffer
+            // Regular character — accumulate to Buffer
             return Take().Forward<ErSttChar>();
         }
 
         bool IsRelationStart()
         {
             string incoming = Ctx.Incoming.ToString();
-            // 关系符号必须以完整的基数模式开始:
-            // ||, |o, |{, }o, }|, }{ (后面跟 -- 或 ..)
+            // Relationship symbol must start with a complete cardinality pattern:
+            // ||, |o, |{, }o, }|, }{ (followed by -- or ..)
             if (incoming.StartsWith("||") || incoming.StartsWith("|o") ||
                 incoming.StartsWith("|{") || incoming.StartsWith("}|") || 
                 incoming.StartsWith("}o") || incoming.StartsWith("}{"))
             {
                 return true;
             }
-            // o| 和 o{ 情况
+            // o| and o{ cases
             if (incoming.StartsWith("o|") || incoming.StartsWith("o{"))
             {
                 return true;

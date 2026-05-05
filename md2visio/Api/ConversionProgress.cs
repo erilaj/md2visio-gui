@@ -1,22 +1,22 @@
 namespace md2visio.Api
 {
     /// <summary>
-    /// 转换进度信息
+    /// Conversion progress information
     /// </summary>
     public sealed class ConversionProgress
     {
         /// <summary>
-        /// 进度百分比 (0-100)
+        /// Progress percentage (0-100)
         /// </summary>
         public int Percentage { get; }
 
         /// <summary>
-        /// 状态消息
+        /// Status message
         /// </summary>
         public string Message { get; }
 
         /// <summary>
-        /// 当前阶段
+        /// Current phase
         /// </summary>
         public ConversionPhase Phase { get; }
 
@@ -29,21 +29,21 @@ namespace md2visio.Api
     }
 
     /// <summary>
-    /// 转换阶段枚举
+    /// Conversion phase enumeration
     /// </summary>
     public enum ConversionPhase
     {
-        /// <summary>启动中</summary>
+        /// <summary>Starting up</summary>
         Starting,
-        /// <summary>解析 Mermaid 语法</summary>
+        /// <summary>Parsing Mermaid syntax</summary>
         Parsing,
-        /// <summary>构建图表数据结构</summary>
+        /// <summary>Building diagram data structures</summary>
         Building,
-        /// <summary>渲染到 Visio</summary>
+        /// <summary>Rendering to Visio</summary>
         Rendering,
-        /// <summary>保存文件</summary>
+        /// <summary>Saving files</summary>
         Saving,
-        /// <summary>完成</summary>
+        /// <summary>Completed</summary>
         Completed
     }
 }

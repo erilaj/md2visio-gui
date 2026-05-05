@@ -1,33 +1,33 @@
 namespace md2visio.Api
 {
     /// <summary>
-    /// 转换请求参数（不可变值对象）
-    /// 支持 fluent builder 模式创建
+    /// Conversion request parameters (immutable value object)
+    /// Supports fluent builder pattern construction
     /// </summary>
     public sealed class ConversionRequest
     {
         /// <summary>
-        /// 输入 Markdown 文件路径
+        /// Input Markdown file path
         /// </summary>
         public string InputPath { get; }
 
         /// <summary>
-        /// 输出路径（可以是 .vsdx 文件路径或目录）
+        /// Output path (can be a .vsdx file path or a directory)
         /// </summary>
         public string OutputPath { get; }
 
         /// <summary>
-        /// 是否显示 Visio 窗口（默认：不显示）
+        /// Whether to show the Visio window (default: hidden)
         /// </summary>
         public bool ShowVisio { get; }
 
         /// <summary>
-        /// 是否静默覆盖已存在文件（默认：是）
+        /// Whether to silently overwrite existing files (default: yes)
         /// </summary>
         public bool SilentOverwrite { get; }
 
         /// <summary>
-        /// 是否启用调试日志（默认：否）
+        /// Whether to enable debug logging (default: no)
         /// </summary>
         public bool Debug { get; }
 
@@ -48,7 +48,7 @@ namespace md2visio.Api
         #region Static Factory Methods
 
         /// <summary>
-        /// 创建转换请求
+        /// Create a conversion request
         /// </summary>
         public static ConversionRequest Create(string inputPath, string outputPath)
         {
@@ -60,7 +60,7 @@ namespace md2visio.Api
         #region Fluent Builder Methods
 
         /// <summary>
-        /// 设置显示 Visio 窗口
+        /// Set whether to show the Visio window
         /// </summary>
         public ConversionRequest WithShowVisio(bool showVisio = true)
         {
@@ -68,7 +68,7 @@ namespace md2visio.Api
         }
 
         /// <summary>
-        /// 设置静默覆盖
+        /// Set silent overwrite
         /// </summary>
         public ConversionRequest WithSilentOverwrite(bool silentOverwrite = true)
         {
@@ -76,7 +76,7 @@ namespace md2visio.Api
         }
 
         /// <summary>
-        /// 设置调试模式
+        /// Set debug mode
         /// </summary>
         public ConversionRequest WithDebug(bool debug = true)
         {

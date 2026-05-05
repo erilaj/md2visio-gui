@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace md2visio.GUI.Services
 {
     /// <summary>
-    /// Mermaid到Visio转换服务
+    /// Mermaid to Visio conversion service
     /// </summary>
     public class ConversionService
     {
@@ -13,41 +13,41 @@ namespace md2visio.GUI.Services
         public event EventHandler<ConversionLogEventArgs>? LogMessage;
 
         /// <summary>
-        /// 转换MD文件到Visio
+        /// Convert MD file to Visio
         /// </summary>
-        /// <param name="inputFile">输入的MD文件路径</param>
-        /// <param name="outputDir">输出目录</param>
-        /// <param name="showVisio">是否显示Visio窗口</param>
-        /// <param name="silentOverwrite">是否静默覆盖</param>
-        /// <returns>转换结果</returns>
+        /// <param name="inputFile">Path to the input MD file</param>
+        /// <param name="outputDir">Output directory</param>
+        /// <param name="showVisio">Whether to show the Visio window</param>
+        /// <param name="silentOverwrite">Whether to silently overwrite existing files</param>
+        /// <returns>Conversion result</returns>
         public async Task<ConversionResult> ConvertAsync(string inputFile, string outputDir, bool showVisio = false, bool silentOverwrite = false)
         {
             return await Task.Run(() => Convert(inputFile, outputDir, showVisio, silentOverwrite));
         }
 
         /// <summary>
-        /// 同步转换方法
+        /// Synchronous conversion method
         /// </summary>
         private ConversionResult Convert(string inputFile, string outputDir, bool showVisio, bool silentOverwrite)
         {
             try
             {
-                ReportProgress(0, "开始转换...");
-                ReportLog($"输入文件: {inputFile}");
-                ReportLog($"输出目录: {outputDir}");
+                ReportProgress(0, "Starting conversion...");
+                ReportLog($"Input file: {inputFile}");
+                ReportLog($"Output directory: {outputDir}");
 
-                // 验证输入文件
+                // Validate input file
                 if (!File.Exists(inputFile))
-                    return ConversionResult.Error($"输入文件不存在: {inputFile}");
+                    return ConversionResult.Error($"Input file does not exist: {inputFile}");
 
                 if (!Path.GetExtension(inputFile).Equals(".md", StringComparison.OrdinalIgnoreCase))
-                    return ConversionResult.Error("输入文件必须是 .md 格式");
+                    return ConversionResult.Error("Input file must be in .md format");
 
-                // 创建输出目录
+                // Create output directory
                 Directory.CreateDirectory(outputDir);
-                ReportProgress(20, "准备转换环境...");
+                ReportProgress(20, "Preparing conversion environment...");
 
-                // 构建参数
+                // Build arguments
                 var args = new List<string>
                 {
                     "/I", $"\"{inputFile}\"",
@@ -57,31 +57,31 @@ namespace md2visio.GUI.Services
                 if (showVisio) args.Add("/V");
                 if (silentOverwrite) args.Add("/Y");
 
-                ReportProgress(40, "执行转换...");
-                ReportLog($"转换参数: {string.Join(" ", args)}");
+                ReportProgress(40, "Executing conversion...");
+                ReportLog($"Conversion arguments: {string.Join(" ", args)}");
 
-                // 调用AppConfig进行转换
+                // Call AppConfig to perform conversion
                 var config = new AppConfig();
                 if (!config.LoadArguments(args.ToArray()))
                 {
-                    return ConversionResult.Error("参数解析失败");
+                    return ConversionResult.Error("Failed to parse arguments");
                 }
 
-                ReportProgress(60, "解析Mermaid内容...");
+                ReportProgress(60, "Parsing Mermaid content...");
 
-                // 执行转换
+                // Execute conversion
                 config.Main();
 
-                ReportProgress(80, "生成Visio文件...");
+                ReportProgress(80, "Generating Visio file...");
 
-                // 查找生成的文件
+                // Find generated files
                 var outputFiles = Directory.GetFiles(outputDir, "*.vsdx");
                 
-                ReportProgress(100, "转换完成!");
+                ReportProgress(100, "Conversion complete!");
 
                 if (outputFiles.Length > 0)
                 {
-                    ReportLog($"成功生成 {outputFiles.Length} 个文件:");
+                    ReportLog($"Successfully generated {outputFiles.Length} file(s):");
                     foreach (var file in outputFiles)
                     {
                         ReportLog($"  - {Path.GetFileName(file)}");
@@ -90,26 +90,26 @@ namespace md2visio.GUI.Services
                 }
                 else
                 {
-                    return ConversionResult.Error("转换完成但未找到输出文件");
+                    return ConversionResult.Error("Conversion completed but no output files were found");
                 }
             }
             catch (NotImplementedException ex)
             {
-                ReportLog($"功能未实现: {ex.Message}");
-                return ConversionResult.Error($"该图表类型暂未支持: {ex.Message}");
+                ReportLog($"Feature not implemented: {ex.Message}");
+                return ConversionResult.Error($"This diagram type is not yet supported: {ex.Message}");
             }
             catch (Exception ex)
             {
-                ReportLog($"转换出错: {ex.Message}");
-                return ConversionResult.Error($"转换失败: {ex.Message}");
+                ReportLog($"Conversion error: {ex.Message}");
+                return ConversionResult.Error($"Conversion failed: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 检测MD文件中的Mermaid图表类型
+        /// Detect Mermaid diagram types in a MD file
         /// </summary>
-        /// <param name="filePath">MD文件路径</param>
-        /// <returns>检测到的图表类型列表</returns>
+        /// <param name="filePath">Path to the MD file</param>
+        /// <returns>List of detected diagram types</returns>
         public List<string> DetectMermaidTypes(string filePath)
         {
             var types = new List<string>();
@@ -138,7 +138,7 @@ namespace md2visio.GUI.Services
                     
                     if (inMermaidBlock && !string.IsNullOrWhiteSpace(trimmed))
                     {
-                        // 检测图表类型
+                        // Detect diagram type
                         var words = trimmed.Split(' ');
                         if (words.Length > 0)
                         {
@@ -153,7 +153,7 @@ namespace md2visio.GUI.Services
             }
             catch (Exception ex)
             {
-                ReportLog($"检测文件类型时出错: {ex.Message}");
+                ReportLog($"Error detecting file types: {ex.Message}");
             }
             
             return types;
@@ -171,7 +171,7 @@ namespace md2visio.GUI.Services
     }
 
     /// <summary>
-    /// 转换结果
+    /// Conversion result
     /// </summary>
     public class ConversionResult
     {
@@ -191,7 +191,7 @@ namespace md2visio.GUI.Services
     }
 
     /// <summary>
-    /// 转换进度事件参数
+    /// Conversion progress event arguments
     /// </summary>
     public class ConversionProgressEventArgs : EventArgs
     {
@@ -206,7 +206,7 @@ namespace md2visio.GUI.Services
     }
 
     /// <summary>
-    /// 转换日志事件参数
+    /// Conversion log event arguments
     /// </summary>
     public class ConversionLogEventArgs : EventArgs
     {

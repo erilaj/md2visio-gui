@@ -3,8 +3,8 @@ using md2visio.mermaid.cmn;
 namespace md2visio.mermaid.er
 {
     /// <summary>
-    /// ER图关键字参数状态类
-    /// 处理 direction TB, direction LR 等参数
+    /// ER diagram keyword parameter state class
+    /// Handles parameters such as direction TB, direction LR
     /// </summary>
     internal class ErSttKeywordParam : SttKeywordParam
     {
