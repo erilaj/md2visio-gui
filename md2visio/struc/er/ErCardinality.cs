@@ -1,28 +1,28 @@
 namespace md2visio.struc.er
 {
     /// <summary>
-    /// ER图基数枚举
-    /// 表示实体之间的关系基数
+    /// ER diagram cardinality enumeration
+    /// Represents the cardinality of the relationship between entities
     /// </summary>
     internal enum ErCardinality
     {
         /// <summary>
-        /// 恰好一个 (||)
+        /// Exactly one (||)
         /// </summary>
         ExactlyOne,
 
         /// <summary>
-        /// 零个或一个 (|o, o|)
+        /// Zero or one (|o, o|)
         /// </summary>
         ZeroOrOne,
 
         /// <summary>
-        /// 一个或多个 (}|, |{)
+        /// One or more (}|, |{)
         /// </summary>
         OneOrMore,
 
         /// <summary>
-        /// 零个或多个 (}o, o{)
+        /// Zero or more (}o, o{)
         /// </summary>
         ZeroOrMore
     }

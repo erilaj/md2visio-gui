@@ -12,8 +12,8 @@ namespace md2visio.mermaid.sequence
 
         public override SynState NextState()
         {
-            // 解析消息语法: from->>to: message
-            // 支持: ->> -->> -> --> 以及 inline 激活 +/- 
+            // Parse message syntax: from->>to: message
+            // Supports: ->> -->> -> --> as well as inline activation +/-
             string messageText = Buffer.ToString();
             
             if (!TryParseMessage(messageText))
@@ -27,7 +27,7 @@ namespace md2visio.mermaid.sequence
 
         private bool TryParseMessage(string messageText)
         {
-            // 正则表达式匹配消息格式: participant1->>[+-]?participant2: message text
+            // Regex to match message format: participant1->>[+-]?participant2: message text
             var pattern = @"^\s*(\w+)\s*(-->?>>?|-->>?|->>?|->)\s*([+-]?)\s*(\w+)\s*:\s*(.*)$";
             var match = Regex.Match(messageText, pattern);
             
@@ -51,7 +51,7 @@ namespace md2visio.mermaid.sequence
         public static bool IsMessage(SynContext ctx)
         {
             string text = ctx.Cache.ToString().Trim();
-            // 检查是否包含消息箭头
+            // Check whether this contains a message arrow
             return Regex.IsMatch(text, @"\w+\s*(-->?>>?|-->>?|->>?|->)\s*[+-]?\s*\w+\s*:");
         }
     }

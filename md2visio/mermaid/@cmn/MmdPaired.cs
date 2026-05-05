@@ -62,11 +62,11 @@ namespace md2visio.mermaid.cmn
 
         public static string PairClose(string pairStart)
         {
-            // 特殊处理复合配对符号
+            // Special handling for compound paired symbols
             if (pairStart == "([") return "])";
             if (pairStart == "[(") return ")]";
             
-            // 原有逻辑保持不变（单字符配对）
+            // Original logic unchanged (single-character pairing)
             StringBuilder sb = new StringBuilder();
             foreach (char c in pairStart)
             {

@@ -13,7 +13,7 @@ namespace md2visio.vsdx
         {
             if (_context.Debug)
             {
-                _context.Log($"[DEBUG] VBuilderSeq: 开始执行构建，VisioApp状态: {(_session.Application != null ? "已创建" : "未创建")}");
+                _context.Log($"[DEBUG] VBuilderSeq: Starting build, VisioApp state: {(_session.Application != null ? "created" : "not created")}");
             }
 
             try
@@ -23,18 +23,18 @@ namespace md2visio.vsdx
 
                 if (_context.Debug)
                 {
-                    _context.Log($"[DEBUG] VBuilderSeq: VDrawerSeq.Draw() 执行完成");
+                    _context.Log($"[DEBUG] VBuilderSeq: VDrawerSeq.Draw() complete");
                 }
             }
             catch (Exception ex)
             {
                 if (_context.Debug)
                 {
-                    _context.Log($"[DEBUG] VBuilderSeq: VDrawerSeq.Draw() 执行失败: {ex.Message}");
-                    _context.Log($"[DEBUG] VBuilderSeq: 异常类型: {ex.GetType().Name}");
+                    _context.Log($"[DEBUG] VBuilderSeq: VDrawerSeq.Draw() failed: {ex.Message}");
+                    _context.Log($"[DEBUG] VBuilderSeq: Exception type: {ex.GetType().Name}");
                     if (ex.InnerException != null)
                     {
-                        _context.Log($"[DEBUG] VBuilderSeq: 内部异常: {ex.InnerException.Message}");
+                        _context.Log($"[DEBUG] VBuilderSeq: Inner exception: {ex.InnerException.Message}");
                     }
                 }
                 throw;

@@ -54,29 +54,29 @@
             // r, g, b -> [0, 1]
             (r, g, b) = (r / 255, g / 255, b / 255);
 
-            // 找到最大值和最小值
+            // Find the maximum and minimum values
             float max = Math.Max(r, Math.Max(g, b));
             float min = Math.Min(r, Math.Min(g, b));
 
-            // 计算 L (亮度)
+            // Calculate L (lightness)
             float l = (max + min) / 2;
 
-            // 计算 S (饱和度)
+            // Calculate S (saturation)
             float s;
             if (max == min)
             {
-                s = 0; // 饱和度为 0，表示灰色
+                s = 0; // saturation is 0, indicating grey
             }
             else
             {
                 s = l > 0.5 ? (max - min) / (2 - max - min) : (max - min) / (max + min);
             }
 
-            // 计算 H (色调)
+            // Calculate H (hue)
             float h = 0;
             if (max == min)
             {
-                h = 0; // 无色调
+                h = 0; // no hue
             }
             else
             {
@@ -92,8 +92,8 @@
                 {
                     h = 4 + (r - g) / (max - min);
                 }
-                h *= 60; // 转换为角度
-                if (h < 0) h += 360; // 确保在 [0, 360] 范围内
+                h *= 60; // convert to degrees
+                if (h < 0) h += 360; // ensure in [0, 360] range
             }
 
             return (h, s, l);
@@ -103,11 +103,11 @@
             float r, g, b;
             if (S == 0)
             {
-                r = g = b = L; // 如果饱和度为 0，则颜色是灰色
+                r = g = b = L; // if saturation is 0, the color is grey
             }
             else
             {
-                // 根据亮度和区域计算颜色分量
+                // Calculate color components based on lightness and region
                 float HueToRgb(float p, float q, float t)
                 {
                     if (t < 0) t += 1;
@@ -121,13 +121,13 @@
                 float q = L < 0.5f ? L * (1 + S) : L + S - L * S;
                 float p = 2 * L - q;
 
-                // 计算 RGB 分量
+                // Calculate RGB components
                 r = HueToRgb(p, q, H / 360f + 1 / 3f);
                 g = HueToRgb(p, q, H / 360f);
                 b = HueToRgb(p, q, H / 360f - 1 / 3f);
             }
 
-            // 将浮点数转换为 [0, 255] 的整数值
+            // Convert floating point to integer in [0, 255]
             return (r * 255, g * 255, b * 255);
         }
         protected void Clamp()

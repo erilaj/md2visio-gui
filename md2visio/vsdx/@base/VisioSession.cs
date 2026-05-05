@@ -5,8 +5,8 @@ using Visio = Microsoft.Office.Interop.Visio;
 namespace md2visio.vsdx.@base
 {
     /// <summary>
-    /// Visio COM 会话实现
-    /// 管理单个 Visio Application 实例的完整生命周期
+    /// Visio COM session implementation
+    /// Manages the complete lifecycle of a single Visio Application instance
     /// </summary>
     public sealed class VisioSession : IVisioSession
     {
@@ -15,12 +15,12 @@ namespace md2visio.vsdx.@base
         private readonly object _lock = new();
 
         /// <summary>
-        /// 是否显示 Visio 窗口
+        /// Whether to show the Visio window
         /// </summary>
         public bool Visible { get; }
 
         /// <summary>
-        /// Visio 应用程序实例
+        /// Visio application instance
         /// </summary>
         public Visio.Application Application
         {
@@ -32,9 +32,9 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 创建 Visio 会话
+        /// Create a Visio session
         /// </summary>
-        /// <param name="visible">是否显示 Visio 窗口</param>
+        /// <param name="visible">Whether to show the Visio window</param>
         public VisioSession(bool visible = false)
         {
             Visible = visible;
@@ -42,7 +42,7 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 确保 Visio 应用程序可用
+        /// Ensure the Visio application is available
         /// </summary>
         private void EnsureVisioApp()
         {
@@ -52,48 +52,48 @@ namespace md2visio.vsdx.@base
                 {
                     if (_app != null)
                     {
-                        // 测试 COM 对象是否有效
+                        // Test whether the COM object is still valid
                         _ = _app.Version;
                         return;
                     }
                 }
                 catch (COMException ex)
                 {
-                    Console.WriteLine($"COM 异常，重新创建 Visio 应用程序: {ex.Message}");
+                    Console.WriteLine($"COM exception, re-creating Visio application: {ex.Message}");
                     _app = null;
                 }
                 catch (InvalidComObjectException ex)
                 {
-                    Console.WriteLine($"COM 对象已释放，重新创建: {ex.Message}");
+                    Console.WriteLine($"COM object has been released, re-creating: {ex.Message}");
                     _app = null;
                 }
 
                 try
                 {
-                    Console.WriteLine("正在创建 Visio 应用程序...");
+                    Console.WriteLine("Creating Visio application...");
                     _app = new Visio.Application();
                     _app.Visible = Visible;
-                    Console.WriteLine($"Visio 应用程序创建成功，版本: {_app.Version}");
+                    Console.WriteLine($"Visio application created successfully, version: {_app.Version}");
                 }
                 catch (COMException ex)
                 {
                     throw new ApplicationException(
-                        $"无法创建 Visio 应用程序。请确认：\n" +
-                        $"1. Microsoft Visio 已正确安装\n" +
-                        $"2. 当前用户有权限访问 Visio\n" +
-                        $"3. Visio 未被其他进程锁定\n" +
-                        $"错误详情: {ex.Message}", ex);
+                        $"Unable to create Visio application. Please verify:\n" +
+                        $"1. Microsoft Visio is correctly installed\n" +
+                        $"2. The current user has permission to access Visio\n" +
+                        $"3. Visio is not locked by another process\n" +
+                        $"Error details: {ex.Message}", ex);
                 }
                 catch (Exception ex)
                 {
                     throw new ApplicationException(
-                        $"创建 Visio 应用程序时发生未知错误: {ex.Message}", ex);
+                        $"An unknown error occurred while creating Visio application: {ex.Message}", ex);
                 }
             }
         }
 
         /// <summary>
-        /// 创建新的空白文档
+        /// Create a new blank document
         /// </summary>
         public Visio.Document CreateDocument()
         {
@@ -102,7 +102,7 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 打开模板文档
+        /// Open a template document
         /// </summary>
         public Visio.Document OpenStencil(string path)
         {
@@ -111,7 +111,7 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 保存文档到指定路径
+        /// Save document to the specified path
         /// </summary>
         public void SaveDocument(Visio.Document doc, string path, bool overwrite = true)
         {
@@ -127,7 +127,7 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 关闭文档
+        /// Close document
         /// </summary>
         public void CloseDocument(Visio.Document doc)
         {
@@ -139,13 +139,13 @@ namespace md2visio.vsdx.@base
             }
             else
             {
-                // 显示模式下保持文档打开，仅标记为已保存
+                // In show mode keep the document open, only mark as saved
                 doc.Saved = true;
             }
         }
 
         /// <summary>
-        /// 释放 Visio COM 资源
+        /// Release Visio COM resources
         /// </summary>
         public void Dispose()
         {
@@ -159,13 +159,13 @@ namespace md2visio.vsdx.@base
                 {
                     if (_app != null && !Visible)
                     {
-                        // 非显示模式：退出 Visio 应用
+                        // Non-show mode: quit Visio application
                         _app.Quit();
                     }
                 }
                 catch (COMException)
                 {
-                    // Visio 可能已被用户手动关闭，忽略异常
+                    // Visio may have been manually closed by the user; ignore exception
                 }
                 finally
                 {
@@ -176,7 +176,7 @@ namespace md2visio.vsdx.@base
         }
 
         /// <summary>
-        /// 获取 Visio 内容目录路径
+        /// Get the Visio content directory path
         /// </summary>
         public static string? GetVisioContentDirectory()
         {

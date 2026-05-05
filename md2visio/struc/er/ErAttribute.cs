@@ -1,48 +1,48 @@
 namespace md2visio.struc.er
 {
     /// <summary>
-    /// ER图属性类
-    /// 表示实体的一个属性
+    /// ER diagram attribute class
+    /// Represents an attribute of an entity
     /// </summary>
     internal class ErAttribute
     {
         /// <summary>
-        /// 属性类型 (如 string, int, date)
+        /// Attribute type (e.g. string, int, date)
         /// </summary>
         public string Type { get; set; } = "";
 
         /// <summary>
-        /// 属性名称
+        /// Attribute name
         /// </summary>
         public string Name { get; set; } = "";
 
         /// <summary>
-        /// 键类型 (PK, FK, UK 或组合如 "PK, FK")
+        /// Key type (PK, FK, UK, or combination such as "PK, FK")
         /// </summary>
         public string Keys { get; set; } = "";
 
         /// <summary>
-        /// 注释
+        /// Comment
         /// </summary>
         public string Comment { get; set; } = "";
 
         /// <summary>
-        /// 是否是主键
+        /// Whether this is a primary key
         /// </summary>
         public bool IsPrimaryKey => Keys.Contains("PK");
 
         /// <summary>
-        /// 是否是外键
+        /// Whether this is a foreign key
         /// </summary>
         public bool IsForeignKey => Keys.Contains("FK");
 
         /// <summary>
-        /// 是否是唯一键
+        /// Whether this is a unique key
         /// </summary>
         public bool IsUniqueKey => Keys.Contains("UK");
 
         /// <summary>
-        /// 生成显示字符串
+        /// Generate display string
         /// </summary>
         public string ToDisplayString()
         {

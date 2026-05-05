@@ -6,7 +6,7 @@ namespace md2visio.mermaid.sequence
     {
         public override SynState NextState()
         {
-            // 简单解析参与者ID（用于activate/deactivate）
+            // Simple participant ID parse (used for activate/deactivate)
             string participantId = Buffer.ToString().Trim();
             
             if (string.IsNullOrEmpty(participantId))
